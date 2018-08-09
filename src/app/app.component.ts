@@ -1,19 +1,22 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 
-@Component({selector: 'app-root', templateUrl: './app.component.html', styleUrls: ['./app.component.css']})
+import { YnabService } from './ynab.service';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']})
 export class AppComponent {
 
-  constructor(private _router: Router) {}
+  constructor(
+    private _ynabService: YnabService
+    ) {}
 
   public notClicked = true;
   public title = 'my-nab';
 
   public onExtensionsClicked(): void {
     this.notClicked = false;
-    this
-      ._router
-      .navigate(['/extensions']);
-
+    this._ynabService.getBudgets();
   }
 }
