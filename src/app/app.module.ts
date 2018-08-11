@@ -5,7 +5,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { YnabService } from './ynab.service';
+import { YnabService } from './services/ynab.service';
 
 @NgModule({
   declarations: [AppComponent],

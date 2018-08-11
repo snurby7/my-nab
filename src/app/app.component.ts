@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { YnabService } from './ynab.service';
+import { YnabService } from './services/ynab.service';
 
 @Component({
   selector: 'app-root',

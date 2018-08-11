@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import * as ynab from 'ynab';
 
-import { Config } from '../data/config.enum';
-import { IBudgetSummary } from './contracts/budget-summary.interface';
+import { Config } from '../../data/config.enum';
+import { IBudgetSummary } from '../contracts/budget-summary.interface';
 
 @Injectable()
 export class YnabService {
