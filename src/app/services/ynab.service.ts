@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/internal/Observable';
+import { from } from 'rxjs/internal/observable/from';
 import * as ynab from 'ynab';
 
 import { Config } from '../../data/config.enum';
-import { IBudgetSummary } from '../contracts/budget-summary.interface';
+import { BudgetSummaryResponse } from 'ynab';
 
 @Injectable()
 export class YnabService {
@@ -13,14 +15,7 @@ export class YnabService {
         this.ynabAPI = new ynab.API(Config.token);
     }
 
-    public getBudgets() {
-        const ynabAPI = this.ynabAPI;
-        (async () => {
-            const budgetsResponse = await ynabAPI.budgets.getBudgets();
-            const budgets: IBudgetSummary[] = budgetsResponse.data.budgets;
-            for (const budget of budgets) {
-              console.log(`Budget Name: ${budget.name}`);
-            }
-          })();
+    public getBudgets(): Observable<BudgetSummaryResponse> {
+        return from(this.ynabAPI.budgets.getBudgets());
     }
 }
