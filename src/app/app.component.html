@@ -5,7 +5,10 @@
   </h1>
   <mat-card *ngFor="let budget of budgets">
     <mat-card-header>
-      <mat-card-title>{{budget.name}}</mat-card-title>
+      <mat-card-title>
+          <button mat-button (click)="selectBudget(budget)">{{budget.name}}</button>
+
+          </mat-card-title>
     </mat-card-header>
     <mat-card-content>
       <div>

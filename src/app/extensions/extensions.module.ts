@@ -8,7 +8,9 @@ import { ExtensionsAgent } from './extensions.agent';
 
 @NgModule({
   imports: [
-    MatButtonModule, CommonModule, ExtensionsRoutingModule
+    CommonModule,
+    ExtensionsRoutingModule,
+    MatButtonModule,
   ],
   declarations: [CategoriesComponent],
   providers: [ExtensionsAgent]
