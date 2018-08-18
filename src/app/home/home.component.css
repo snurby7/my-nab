@@ -1,0 +1,10 @@
+.home-container  {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+}
+.home-container  > mat-card {
+    padding: 20px;
+    width: 50%;
+    text-align: center;
+}

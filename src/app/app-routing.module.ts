@@ -5,11 +5,16 @@ const routes: Routes = [
   {
     path: 'extensions',
     loadChildren: 'src/app/extensions/extensions.module#ExtensionsModule'
-  }, {
+  },
+  {
+    path: 'home',
+    loadChildren: 'src/app/home/home.module#HomeModule'
+  },
+  {
     path: '',
-    redirectTo: '',
+    redirectTo: '/home',
     pathMatch: 'full'
-  }
+  },
 ];
 
 @NgModule({

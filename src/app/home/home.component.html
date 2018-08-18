@@ -1,0 +1,25 @@
+<div>
+    <h1>
+        Welcome to {{ title }}!
+    </h1>
+    <div class="home-container">
+        <mat-card class="" *ngFor="let budget of budgets">
+            <mat-card-header>
+                <mat-card-title>
+                    <button mat-button (click)="selectBudget(budget)">Open {{budget.name}}</button>
+                </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <div>
+                    Last Modified: {{budget.last_modified_on | date}}
+                </div>
+                <div>
+                    Date Started: {{budget.first_month | date}}
+                </div>
+                <div>
+                    Latest Month: {{budget.last_month | date}}
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>
