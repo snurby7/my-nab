@@ -1,5 +1,6 @@
 <div>
   <div *ngFor="let category of categories">
-    {{category.name}}
+      <button mat-button
+        (click)="openCategory(category)">{{category.name}}</button>
   </div>
 </div>
