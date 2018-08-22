@@ -1,11 +1,32 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material';
-import { CategoryGroupWithCategories } from 'ynab';
+import {
+  Component,
+  OnInit,
+} from '@angular/core';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+import {
+  MatDialog,
+} from '@angular/material';
+import {
+  Category,
+  CategoryGroupWithCategories,
+} from 'ynab';
 
-import { YnabAgent } from '../../agent/ynab.agent';
-import { YnabDataService } from '../../services/ynab-data.service';
-import { CategoryViewerDialogComponent } from '../dialogs/category-viewer-dialog.component';
-import { ICategoryViewerDialog } from '../interface/category-viewer-dialog.interface';
+import {
+  YnabAgent,
+} from '../../agent/ynab.agent';
+import {
+  YnabDataService,
+} from '../../services/ynab-data.service';
+import {
+  CategoryViewerDialogComponent,
+} from '../dialogs/category-viewer-dialog.component';
+import {
+  ICategoryViewerDialog,
+} from '../interface/category-viewer-dialog.interface';
 
 @Component({
   selector: 'app-categories',
@@ -14,9 +35,15 @@ import { ICategoryViewerDialog } from '../interface/category-viewer-dialog.inter
 })
 export class CategoriesComponent implements OnInit {
   private _selectedBudgetId: string = null;
+
   public categories: CategoryGroupWithCategories[] = [];
+  public selectedCategory: CategoryGroupWithCategories = null;
+  public subCategories: Category[] = [];
+  public firstFormGroup: FormGroup;
+  public secondFormGroup: FormGroup;
 
   constructor(
+    private _formBuilder: FormBuilder,
     private _matDialog: MatDialog,
     private _ynabAgent: YnabAgent,
     private _ynabDataService: YnabDataService
@@ -25,6 +52,12 @@ export class CategoriesComponent implements OnInit {
   }
 
   public ngOnInit(): void {
+    this.firstFormGroup = this._formBuilder.group({
+      firstCtrl: ['', Validators.required]
+    });
+    this.secondFormGroup = this._formBuilder.group({
+      secondCtrl: ['', Validators.required]
+    });
     if (this._selectedBudgetId) {
       this._ynabAgent.getCategoriesByBudgetId(this._selectedBudgetId).subscribe({
         next: categoryWrapper => {
@@ -42,5 +75,9 @@ export class CategoriesComponent implements OnInit {
         budgetId: this._selectedBudgetId
       }
     });
+  }
+
+  public prepareSubCategory(): void {
+    this.subCategories = this.selectedCategory.categories;
   }
 }
