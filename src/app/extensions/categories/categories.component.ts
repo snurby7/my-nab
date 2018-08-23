@@ -13,6 +13,7 @@ import {
 import {
   Category,
   CategoryGroupWithCategories,
+  HybridTransaction,
 } from 'ynab';
 
 import {
@@ -36,11 +37,15 @@ import {
 export class CategoriesComponent implements OnInit {
   private _selectedBudgetId: string = null;
 
-  public categories: CategoryGroupWithCategories[] = [];
-  public selectedCategory: CategoryGroupWithCategories = null;
-  public subCategories: Category[] = [];
   public firstFormGroup: FormGroup;
   public secondFormGroup: FormGroup;
+
+  public categories: CategoryGroupWithCategories[] = [];
+  public selectedCategory: CategoryGroupWithCategories = null;
+  public selectedSubCategory: Category = null;
+  public subCategories: Category[] = [];
+  public transactions: HybridTransaction[] = [];
+  public transactionsTotal = 0;
 
   constructor(
     private _formBuilder: FormBuilder,
@@ -79,5 +84,20 @@ export class CategoriesComponent implements OnInit {
 
   public prepareSubCategory(): void {
     this.subCategories = this.selectedCategory.categories;
+  }
+
+  public prepareTransactions(): void {
+    if (!this.selectedSubCategory) { return; }
+    const currentDate = new Date();
+    const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+
+    this._ynabAgent.getTransactionsBySubCategoryId(this._selectedBudgetId, this.selectedSubCategory.id, firstDay).subscribe({
+      next: dataWrapper => {
+        this.transactions = dataWrapper.data.transactions;
+        this.transactionsTotal = this.transactions.reduce((accumulator, transaction) =>
+          accumulator + transaction.amount
+        , 0) / 1000;
+      }, error: error => console.log(error)
+    });
   }
 }

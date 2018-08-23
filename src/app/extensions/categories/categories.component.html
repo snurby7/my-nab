@@ -26,13 +26,17 @@
       </mat-form-field>
       <div>
         <button mat-button matStepperPrevious>Back</button>
-        <button mat-button matStepperNext>Next</button>
+        <button mat-button matStepperNext (click)="prepareTransactions()">Next</button>
       </div>
     </form>
   </mat-step>
   <mat-step>
     <ng-template matStepLabel>Done</ng-template>
-    You are now done.
+    Here are all the transactions for {{selectedSubCategory?.name}}
+    <div>Total Spent {{ transactionsTotal | currency:'USD' }}</div>
+    <div *ngFor="let transaction of transactions">
+      We wasted money at {{transaction.payee_name}}
+    </div>
     <div>
       <button mat-button matStepperPrevious>Back</button>
       <button mat-button (click)="stepper.reset()">Reset</button>

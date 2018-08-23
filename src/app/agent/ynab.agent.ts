@@ -4,11 +4,11 @@ import { from } from 'rxjs/internal/observable/from';
 import * as ynab from 'ynab';
 
 import { Config } from '../../data/config.enum';
-import { BudgetSummaryResponse, CategoriesResponse, CategoryResponse } from 'ynab';
+import { BudgetSummaryResponse, CategoriesResponse, CategoryResponse, HybridTransactionsResponse } from 'ynab';
 
 @Injectable()
 export class YnabAgent {
-    public ynabAPI: any;
+    public ynabAPI: ynab.api;
 
     constructor(
     ) {
@@ -25,5 +25,11 @@ export class YnabAgent {
 
     public getCategoryById(budgetId: string, categoryId: string, options: any = {}): Observable<CategoryResponse> {
         return from(this.ynabAPI.categories.getCategoryById(budgetId, categoryId, options));
+    }
+
+    public getTransactionsBySubCategoryId(
+        budgetId: string, subCategoryId: string, sinceDate?: Date, type?: any
+    ): Observable<HybridTransactionsResponse> {
+        return from(this.ynabAPI.transactions.getTransactionsByCategory(budgetId, subCategoryId, sinceDate, type));
     }
 }
