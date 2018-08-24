@@ -1,32 +1,32 @@
 import {
-  Component,
-  OnInit,
+    Component,
+    OnInit,
 } from '@angular/core';
 import {
-  FormBuilder,
-  FormGroup,
-  Validators,
+    FormBuilder,
+    FormGroup,
+    Validators,
 } from '@angular/forms';
 import {
-  MatDialog,
+    MatDialog,
 } from '@angular/material';
 import {
-  Category,
-  CategoryGroupWithCategories,
-  HybridTransaction,
+    Category,
+    CategoryGroupWithCategories,
+    HybridTransaction,
 } from 'ynab';
 
 import {
-  YnabAgent,
+    YnabAgent,
 } from '../../agent/ynab.agent';
 import {
-  YnabDataService,
+    YnabDataService,
 } from '../../services/ynab-data.service';
 import {
-  CategoryViewerDialogComponent,
+    CategoryViewerDialogComponent,
 } from '../dialogs/category-viewer-dialog.component';
 import {
-  ICategoryViewerDialog,
+    ICategoryViewerDialog,
 } from '../interface/category-viewer-dialog.interface';
 
 @Component({

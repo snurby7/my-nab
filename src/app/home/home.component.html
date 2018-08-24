@@ -3,7 +3,8 @@
         Welcome to {{ title }}!
     </h1>
     <div class="home-container">
-        <mat-card class="" *ngFor="let budget of budgets">
+        <button mat-button (click)="updateBudgets()">Update Budgets</button>
+        <mat-card *ngFor="let budget of firebaseService.budgets | async">
             <mat-card-header>
                 <mat-card-title>
                     <button mat-button (click)="selectBudget(budget)">Open {{budget.name}}</button>
