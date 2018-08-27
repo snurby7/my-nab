@@ -12,6 +12,9 @@ import {
     YnabAgent,
 } from '../agent/ynab.agent';
 import {
+    YnabErrorService,
+} from '../services/error.service';
+import {
     FirebaseService,
 } from '../services/firebase.service';
 import {
@@ -31,6 +34,7 @@ export class HomeComponent {
         private _router: Router,
         private _ynabAgent: YnabAgent,
         private _ynabDataService: YnabDataService,
+        private _ynabErrorService: YnabErrorService,
         public firebaseService: FirebaseService
     ) {
     }
@@ -46,8 +50,7 @@ export class HomeComponent {
             next: results => {
                 this._budgets = results.data.budgets;
                 this.firebaseService.updateBudgets(this._budgets);
-            },
-            error: error => console.log(error)
+            }, error: error => this._ynabErrorService.processError(error)
         });
     }
 }

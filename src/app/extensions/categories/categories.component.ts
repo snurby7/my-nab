@@ -1,32 +1,38 @@
 import {
-    Component,
-    OnInit,
+  Component,
+  OnInit,
 } from '@angular/core';
 import {
-    FormBuilder,
-    FormGroup,
-    Validators,
+  FormBuilder,
+  FormGroup,
+  Validators,
 } from '@angular/forms';
 import {
-    MatDialog,
+  MatDialog,
 } from '@angular/material';
 import {
-    Category,
-    CategoryGroupWithCategories,
-    HybridTransaction,
+  Category,
+  CategoryGroupWithCategories,
+  HybridTransaction,
 } from 'ynab';
 
 import {
-    YnabAgent,
+  YnabAgent,
 } from '../../agent/ynab.agent';
 import {
-    YnabDataService,
+  YnabErrorService,
+} from '../../services/error.service';
+import {
+  FirebaseService,
+} from '../../services/firebase.service';
+import {
+  YnabDataService,
 } from '../../services/ynab-data.service';
 import {
-    CategoryViewerDialogComponent,
+  CategoryViewerDialogComponent,
 } from '../dialogs/category-viewer-dialog.component';
 import {
-    ICategoryViewerDialog,
+  ICategoryViewerDialog,
 } from '../interface/category-viewer-dialog.interface';
 
 @Component({
@@ -50,8 +56,10 @@ export class CategoriesComponent implements OnInit {
   constructor(
     private _formBuilder: FormBuilder,
     private _matDialog: MatDialog,
+    private _firebaseService: FirebaseService,
     private _ynabAgent: YnabAgent,
-    private _ynabDataService: YnabDataService
+    private _ynabDataService: YnabDataService,
+    private _ynabErrorService: YnabErrorService
   ) {
     this._selectedBudgetId = this._ynabDataService.selectedBudgetId;
   }
@@ -67,7 +75,7 @@ export class CategoriesComponent implements OnInit {
       this._ynabAgent.getCategoriesByBudgetId(this._selectedBudgetId).subscribe({
         next: categoryWrapper => {
           this.categories = categoryWrapper.data.category_groups.filter(x => !x.hidden || !x.deleted);
-        }, error: error => console.log(error)
+        }, error: error => this._ynabErrorService.processError(error)
       });
     }
   }
@@ -94,10 +102,11 @@ export class CategoriesComponent implements OnInit {
     this._ynabAgent.getTransactionsBySubCategoryId(this._selectedBudgetId, this.selectedSubCategory.id, firstDay).subscribe({
       next: dataWrapper => {
         this.transactions = dataWrapper.data.transactions;
+        this._firebaseService.updateTransactions(this.transactions);
         this.transactionsTotal = this.transactions.reduce((accumulator, transaction) =>
           accumulator + transaction.amount
         , 0) / 1000;
-      }, error: error => console.log(error)
+      }, error: error => this._ynabErrorService.processError(error)
     });
   }
 }

@@ -30,6 +30,9 @@ import {
   AppComponent,
 } from './app.component';
 import {
+  YnabErrorService,
+} from './services/error.service';
+import {
   FirebaseService,
 } from './services/firebase.service';
 import {
@@ -49,7 +52,8 @@ import {
   providers : [
     FirebaseService,
     YnabAgent,
-    YnabDataService
+    YnabDataService,
+    YnabErrorService
   ],
   bootstrap: [AppComponent]
 })
