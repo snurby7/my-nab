@@ -1,6 +1,5 @@
 import {
   Component,
-  OnInit,
 } from '@angular/core';
 import {
   FormBuilder,
@@ -28,19 +27,13 @@ import {
 import {
   YnabDataService,
 } from '../../services/ynab-data.service';
-import {
-  CategoryViewerDialogComponent,
-} from '../dialogs/category-viewer-dialog.component';
-import {
-  ICategoryViewerDialog,
-} from '../interface/category-viewer-dialog.interface';
 
 @Component({
   selector: 'app-categories',
   templateUrl: './categories.component.html',
   styleUrls: ['./categories.component.css']
 })
-export class CategoriesComponent implements OnInit {
+export class CategoriesComponent  {
   private _selectedBudgetId: string = null;
 
   public firstFormGroup: FormGroup;
@@ -62,9 +55,6 @@ export class CategoriesComponent implements OnInit {
     private _ynabErrorService: YnabErrorService
   ) {
     this._selectedBudgetId = this._ynabDataService.selectedBudgetId;
-  }
-
-  public ngOnInit(): void {
     this.firstFormGroup = this._formBuilder.group({
       firstCtrl: ['', Validators.required]
     });
@@ -80,14 +70,13 @@ export class CategoriesComponent implements OnInit {
     }
   }
 
-  public openCategory(category: CategoryGroupWithCategories): void {
-    this._matDialog.open(CategoryViewerDialogComponent, {
-      width: '300px',
-      data: <ICategoryViewerDialog>{
-        category,
-        budgetId: this._selectedBudgetId
-      }
-    });
+  public updateAllTransactions(): void {
+    alert('2941 records later...this is off');
+    // this._ynabAgent.getTransactionsByBudget(this._selectedBudgetId).subscribe({
+    //   next: result => {
+    //     this._firebaseService.updateTransactionDetails(result.data.transactions);
+    //   }, error: error => this._ynabErrorService.processError(error)
+    // });
   }
 
   public prepareSubCategory(): void {

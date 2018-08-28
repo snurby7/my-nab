@@ -25,9 +25,6 @@ import {
   CategoriesComponent,
 } from './categories/categories.component';
 import {
-  CategoryViewerDialogComponent,
-} from './dialogs/category-viewer-dialog.component';
-import {
   ExtensionsRoutingModule,
 } from './extensions-routing.module';
 import {
@@ -47,10 +44,8 @@ import {
   ],
   declarations: [
     CategoriesComponent,
-    CategoryViewerDialogComponent
   ],
   entryComponents: [
-    CategoryViewerDialogComponent
   ],
   providers: [ExtensionsAgent]
 })

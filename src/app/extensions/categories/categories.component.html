@@ -1,3 +1,6 @@
+<div>
+  <button disabled mat-button (click)="updateAllTransactions()">Update All Transactions</button>
+</div>
 <mat-vertical-stepper [linear]="isLinear" #stepper>
   <mat-step [stepControl]="firstFormGroup">
     <form [formGroup]="firstFormGroup">

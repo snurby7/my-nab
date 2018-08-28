@@ -11,6 +11,7 @@ import {
 import {
     BudgetSummary,
     HybridTransaction,
+    TransactionDetail,
 } from 'ynab';
 
 interface IBase {
@@ -23,6 +24,7 @@ export class FirebaseService {
 
     private readonly _budgetCollectionKey = 'budgets';
     private readonly _transactionCollectionKey = 'transactions';
+    private readonly _transactionDetailCollectionKey = 'transactionDetails';
     public budgets: Observable<BudgetSummary[]>;
     constructor(
         private _angularFireStore: AngularFirestore
@@ -37,6 +39,10 @@ export class FirebaseService {
 
     public updateTransactions(transactions: HybridTransaction[]): void {
         this.updateRefs<HybridTransaction>(transactions, this._transactionCollectionKey);
+    }
+
+    public updateTransactionDetails(transactions: TransactionDetail[]): void {
+        this.updateRefs<TransactionDetail>(transactions, this._transactionDetailCollectionKey);
     }
 
     private updateRefs<T>(data: T[], collectionKey: string): void {
