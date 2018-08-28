@@ -1,0 +1,15 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "ng serve and open",
+            "type": "shell",
+            "command": "ng serve -o",
+            "problemMatcher": [],
+            "group": {
+                "isDefault": true,
+                "kind": "build"
+            }
+        }
+    ]
+}
