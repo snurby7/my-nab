@@ -9,12 +9,6 @@ import {
 } from 'ynab';
 
 import {
-    YnabAgent,
-} from '../agent/ynab.agent';
-import {
-    YnabErrorService,
-} from '../services/error.service';
-import {
     FirebaseService,
 } from '../services/firebase.service';
 import {
@@ -27,14 +21,11 @@ import {
     styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
-    private _budgets: BudgetSummary[] = [];
     public title = 'my-nab';
 
     constructor(
         private _router: Router,
-        private _ynabAgent: YnabAgent,
         private _ynabDataService: YnabDataService,
-        private _ynabErrorService: YnabErrorService,
         public firebaseService: FirebaseService
     ) {
     }
@@ -44,13 +35,10 @@ export class HomeComponent {
         this._router.navigate(['/extensions']);
     }
 
-    // TODO need to figure out how to update budgets and probably refresh them
-    public updateBudgets() {
-        this._ynabAgent.getBudgets().subscribe({
-            next: results => {
-                this._budgets = results.data.budgets;
-                this.firebaseService.updateBudgets(this._budgets);
-            }, error: error => this._ynabErrorService.processError(error)
-        });
+    public queryTransactions() {
+        const currentDate = new Date();
+        const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+
+        this.firebaseService.queryTransactionsByDate(firstDay, currentDate);
     }
 }
