@@ -23,22 +23,16 @@ import {
 export class HomeComponent {
     public title = 'my-nab';
 
+    public get budgets() { return this._firebaseService.budgets; }
+
     constructor(
         private _router: Router,
-        private _ynabDataService: YnabDataService,
-        public firebaseService: FirebaseService
-    ) {
-    }
+        private _firebaseService: FirebaseService,
+        private _ynabDataService: YnabDataService
+    ) { }
 
     public selectBudget(budget: BudgetSummary): void {
         this._ynabDataService.selectedBudgetId = budget.id;
         this._router.navigate(['/extensions']);
-    }
-
-    public queryTransactions() {
-        const currentDate = new Date();
-        const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-
-        this.firebaseService.queryTransactionsByDate(firstDay, currentDate);
     }
 }

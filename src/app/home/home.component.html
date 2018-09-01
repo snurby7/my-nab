@@ -3,10 +3,7 @@
         Welcome to {{ title }}!
     </h1>
     <div class="home-container">
-        <div>
-            <button mat-button (click)="queryTransactions()">Query Transactioins</button>
-        </div>
-        <mat-card *ngFor="let budget of firebaseService.budgets | async">
+        <mat-card *ngFor="let budget of budgets | async">
             <mat-card-header>
                 <mat-card-title>
                     <button mat-button (click)="selectBudget(budget)">Open {{budget.name}}</button>

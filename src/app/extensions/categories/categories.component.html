@@ -1,13 +1,10 @@
-<div>
-  <button disabled mat-button (click)="updateAllTransactions()">Update All Transactions</button>
-</div>
 <mat-vertical-stepper [linear]="isLinear" #stepper>
   <mat-step [stepControl]="firstFormGroup">
     <form [formGroup]="firstFormGroup">
       <ng-template matStepLabel>Select the category</ng-template>
       <mat-form-field>
         <mat-select [(value)]="selectedCategory" required>
-          <mat-option *ngFor="let category of categories" [value]="category">
+          <mat-option *ngFor="let category of categories | async" [value]="category">
             {{category.name}}
           </mat-option>
         </mat-select>
@@ -38,7 +35,7 @@
     Here are all the transactions for {{selectedSubCategory?.name}}
     <div>Total Spent {{ transactionsTotal | currency:'USD' }}</div>
     <div *ngFor="let transaction of transactions">
-      We wasted money at {{transaction.payee_name}}
+      We wasted money at {{transaction.payee_name}} on {{transaction.date | date:'shortDate'}}
     </div>
     <div>
       <button mat-button matStepperPrevious>Back</button>

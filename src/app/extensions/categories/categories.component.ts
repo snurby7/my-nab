@@ -7,12 +7,9 @@ import {
   Validators,
 } from '@angular/forms';
 import {
-  MatDialog,
-} from '@angular/material';
-import {
   Category,
   CategoryGroupWithCategories,
-  HybridTransaction,
+  TransactionDetail,
 } from 'ynab';
 
 import {
@@ -39,16 +36,16 @@ export class CategoriesComponent  {
   public firstFormGroup: FormGroup;
   public secondFormGroup: FormGroup;
 
-  public categories: CategoryGroupWithCategories[] = [];
   public selectedCategory: CategoryGroupWithCategories = null;
   public selectedSubCategory: Category = null;
   public subCategories: Category[] = [];
-  public transactions: HybridTransaction[] = [];
+  public transactions: TransactionDetail[] = [];
   public transactionsTotal = 0;
+
+  public get categories() { return this._firebaseService.categories; }
 
   constructor(
     private _formBuilder: FormBuilder,
-    private _matDialog: MatDialog,
     private _firebaseService: FirebaseService,
     private _ynabAgent: YnabAgent,
     private _ynabDataService: YnabDataService,
@@ -64,19 +61,10 @@ export class CategoriesComponent  {
     if (this._selectedBudgetId) {
       this._ynabAgent.getCategoriesByBudgetId(this._selectedBudgetId).subscribe({
         next: categoryWrapper => {
-          this.categories = categoryWrapper.data.category_groups.filter(x => !x.hidden || !x.deleted);
+          this._firebaseService.updateCategoryCollection(categoryWrapper.data.category_groups);
         }, error: error => this._ynabErrorService.processError(error)
       });
     }
-  }
-
-  public updateAllTransactions(): void {
-    alert('2941 records later...this is off');
-    // this._ynabAgent.getTransactionsByBudget(this._selectedBudgetId).subscribe({
-    //   next: result => {
-    //     this._firebaseService.updateTransactionDetails(result.data.transactions);
-    //   }, error: error => this._ynabErrorService.processError(error)
-    // });
   }
 
   public prepareSubCategory(): void {
@@ -86,16 +74,18 @@ export class CategoriesComponent  {
   public prepareTransactions(): void {
     if (!this.selectedSubCategory) { return; }
     const currentDate = new Date();
-    const firstDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+    const lowerBound = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1);
 
-    this._ynabAgent.getTransactionsBySubCategoryId(this._selectedBudgetId, this.selectedSubCategory.id, firstDay).subscribe({
-      next: dataWrapper => {
-        this.transactions = dataWrapper.data.transactions;
-        this._firebaseService.updateTransactions(this.transactions);
+    this._firebaseService.queryTransactionsByDate(this.selectedSubCategory.id, lowerBound).subscribe({
+      next: results => {
+        // will need to process these here since FB doesn't like my queries.
+        // TODO create an actual backend.
+        this.transactions = results;
         this.transactionsTotal = this.transactions.reduce((accumulator, transaction) =>
           accumulator + transaction.amount
         , 0) / 1000;
-      }, error: error => this._ynabErrorService.processError(error)
+        console.log(results);
+      }, error: error => console.log(error)
     });
   }
 }
