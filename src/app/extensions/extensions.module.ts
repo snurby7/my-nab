@@ -10,6 +10,8 @@ import {
 } from '@angular/forms';
 import {
   MatButtonModule,
+  MatDatepickerModule,
+  MatInputModule,
 } from '@angular/material';
 import {
   MatDialogModule,
@@ -36,7 +38,9 @@ import {
     CommonModule,
     ExtensionsRoutingModule,
     MatButtonModule,
+    MatDatepickerModule,
     MatDialogModule,
+    MatInputModule,
     MatSelectModule,
     MatStepperModule,
     FormsModule,

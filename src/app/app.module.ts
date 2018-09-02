@@ -5,6 +5,9 @@ import {
   NgModule,
 } from '@angular/core';
 import {
+  MatNativeDateModule,
+} from '@angular/material';
+import {
   BrowserModule,
 } from '@angular/platform-browser';
 import {
@@ -47,7 +50,8 @@ import {
     AppRoutingModule,
     BrowserAnimationsModule,
     BrowserModule,
-    HttpClientModule
+    HttpClientModule,
+    MatNativeDateModule
   ],
   providers : [
     FirebaseService,

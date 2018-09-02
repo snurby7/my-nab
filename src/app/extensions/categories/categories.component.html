@@ -3,14 +3,14 @@
     <form [formGroup]="firstFormGroup">
       <ng-template matStepLabel>Select the category</ng-template>
       <mat-form-field>
-        <mat-select [(value)]="selectedCategory" required>
+        <mat-select formControlName="categoryCtrl" required>
           <mat-option *ngFor="let category of categories | async" [value]="category">
             {{category.name}}
           </mat-option>
         </mat-select>
       </mat-form-field>
       <div>
-        <button mat-button (click)="prepareSubCategory()" matStepperNext>Next</button>
+        <button mat-button [disabled]="!firstFormGroup.valid" (click)="prepareSubCategory()" matStepperNext>Next</button>
       </div>
     </form>
   </mat-step>
@@ -18,21 +18,26 @@
     <form [formGroup]="secondFormGroup">
       <ng-template matStepLabel>Select the sub-category</ng-template>
       <mat-form-field>
-        <mat-select [(value)]="selectedSubCategory" required>
+        <mat-select formControlName="categoryCtrl" required>
           <mat-option *ngFor="let subCategory of subCategories" [value]="subCategory">
             {{subCategory.name}}
           </mat-option>
         </mat-select>
       </mat-form-field>
+      <mat-form-field>
+        <input matInput formControlName="dateCtrl" [matDatepicker]="picker" placeholder="Choose a start date">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker startView="year" [startAt]="startDate"></mat-datepicker>
+      </mat-form-field>
       <div>
         <button mat-button matStepperPrevious>Back</button>
-        <button mat-button matStepperNext (click)="prepareTransactions()">Next</button>
+        <button mat-button matStepperNext [disabled]="!secondFormGroup.valid" (click)="prepareTransactions()">Next</button>
       </div>
     </form>
   </mat-step>
   <mat-step>
     <ng-template matStepLabel>Done</ng-template>
-    Here are all the transactions for {{selectedSubCategory?.name}}
+    Here are all the transactions for {{selectedSubCategory?.name}} since {{startDate| date:'shortDate'}}
     <div>Total Spent {{ transactionsTotal | currency:'USD' }}</div>
     <div *ngFor="let transaction of transactions">
       We wasted money at {{transaction.payee_name}} on {{transaction.date | date:'shortDate'}}
