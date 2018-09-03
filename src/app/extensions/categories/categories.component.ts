@@ -8,12 +8,18 @@ import {
 } from '@angular/forms';
 import {
   Category,
-  TransactionDetail,
+  CategoryGroupWithCategories,
 } from 'ynab';
 
 import {
   FirebaseService,
 } from '../../services/firebase.service';
+import {
+  YnabDataService,
+} from '../../services/ynab-data.service';
+import {
+  IMonthlyTransactionTotal,
+} from '../interface/monthly-transaction-total.interface';
 
 @Component({
   selector: 'app-categories',
@@ -25,24 +31,28 @@ export class CategoriesComponent  {
   public secondFormGroup: FormGroup;
   public startDate = new Date();
 
+  public categories: CategoryGroupWithCategories[] = [];
   public selectedSubCategory: Category = null;
   public subCategories: Category[] = [];
-  public transactions: TransactionDetail[] = [];
+  public monthlyTransactionTotals: IMonthlyTransactionTotal[] = [];
   public transactionsTotal = 0;
-
-  public get categories() { return this._firebaseService.categories; }
 
   constructor(
     private _formBuilder: FormBuilder,
     private _firebaseService: FirebaseService,
+    private _ynabDataService: YnabDataService
   ) {
+    this._firebaseService.getVisibleMasterCategories().subscribe({
+      next: categories => this.categories = categories,
+      error: error => console.log(error)
+    });
     // need to bring back a notion of a selected budget, probably a guard.
     this.firstFormGroup = this._formBuilder.group({
       categoryCtrl: ['', Validators.required]
     });
     this.secondFormGroup = this._formBuilder.group({
       categoryCtrl: ['', Validators.required],
-      dateCtrl: ['', Validators.required]
+      dateCtrl: [this.startDate, Validators.required]
     });
   }
 
@@ -57,10 +67,9 @@ export class CategoriesComponent  {
       next: results => {
         // will need to process these here since FB doesn't like my queries.
         // TODO create an actual backend.
-        this.transactions = results;
-        this.transactionsTotal = this.transactions.reduce((accumulator, transaction) =>
-          accumulator + transaction.amount
-        , 0) / 1000;
+        this.monthlyTransactionTotals = this._ynabDataService.processTransactionsByMonth(results);
+        this.transactionsTotal = this.monthlyTransactionTotals
+          .reduce((accumulator, monthlyTransactionTotal) => accumulator + monthlyTransactionTotal.expense, 0);
       }, error: error => console.log(error)
     });
   }

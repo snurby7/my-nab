@@ -24,6 +24,8 @@ export class HomeComponent {
     public title = 'my-nab';
 
     public get budgets() { return this._firebaseService.budgets; }
+    // don't do this async, it goes poorly.
+    // public get budgets() { return this._ynabAgent.getBudgets() }
 
     constructor(
         private _router: Router,

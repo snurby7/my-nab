@@ -1,18 +1,18 @@
 import {
-  Injectable,
+    Injectable,
 } from '@angular/core';
 import {
-  AngularFirestore,
-  AngularFirestoreCollection,
+    AngularFirestore,
+    AngularFirestoreCollection,
 } from 'angularfire2/firestore';
 import {
-  Observable,
+    Observable,
 } from 'rxjs/internal/Observable';
 import {
-  BudgetSummary,
-  CategoryGroupWithCategories,
-  HybridTransaction,
-  TransactionDetail,
+    BudgetSummary,
+    CategoryGroupWithCategories,
+    HybridTransaction,
+    TransactionDetail,
 } from 'ynab';
 
 interface IBase {
@@ -59,6 +59,15 @@ export class FirebaseService {
 
     public updateCategoryCollection(categories: CategoryGroupWithCategories[]): void {
         this.updateRefs<CategoryGroupWithCategories>(categories, this._categoryCollectionKey);
+    }
+
+    public getVisibleMasterCategories(): Observable<CategoryGroupWithCategories[]> {
+        return this._angularFireStore.collection(
+            this._categoryCollectionKey,
+            ref => ref.orderBy('name')
+                .where('hidden', '==', false)
+                .where('deleted', '==', false)
+        ).valueChanges() as Observable<CategoryGroupWithCategories[]>;
     }
 
     public queryTransactionsByDate(subCategoryId: string, lowerBound: Date): Observable<TransactionDetail[]> {

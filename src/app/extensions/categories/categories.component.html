@@ -4,7 +4,7 @@
       <ng-template matStepLabel>Select the category</ng-template>
       <mat-form-field>
         <mat-select formControlName="categoryCtrl" required>
-          <mat-option *ngFor="let category of categories | async" [value]="category">
+          <mat-option *ngFor="let category of categories" [value]="category">
             {{category.name}}
           </mat-option>
         </mat-select>
@@ -39,8 +39,8 @@
     <ng-template matStepLabel>Done</ng-template>
     Here are all the transactions for {{selectedSubCategory?.name}} since {{startDate| date:'shortDate'}}
     <div>Total Spent {{ transactionsTotal | currency:'USD' }}</div>
-    <div *ngFor="let transaction of transactions">
-      We wasted money at {{transaction.payee_name}} on {{transaction.date | date:'shortDate'}}
+    <div *ngFor="let monthlyTransactionTotal of monthlyTransactionTotals">
+      Spent {{monthlyTransactionTotal.expense | currency:'USD'}} in the month of {{monthlyTransactionTotal.month | date:'shortDate'}}
     </div>
     <div>
       <button mat-button matStepperPrevious>Back</button>
