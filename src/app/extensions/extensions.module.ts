@@ -11,6 +11,7 @@ import {
 import {
   MatButtonModule,
   MatDatepickerModule,
+  MatIconModule,
   MatInputModule,
 } from '@angular/material';
 import {
@@ -40,6 +41,7 @@ import {
     MatButtonModule,
     MatDatepickerModule,
     MatDialogModule,
+    MatIconModule,
     MatInputModule,
     MatSelectModule,
     MatStepperModule,

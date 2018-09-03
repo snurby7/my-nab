@@ -24,7 +24,7 @@ import {
 @Component({
   selector: 'app-categories',
   templateUrl: './categories.component.html',
-  styleUrls: ['./categories.component.css']
+  styleUrls: ['./categories.component.scss']
 })
 export class CategoriesComponent  {
   public firstFormGroup: FormGroup;
@@ -35,6 +35,7 @@ export class CategoriesComponent  {
   public selectedSubCategory: Category = null;
   public subCategories: Category[] = [];
   public monthlyTransactionTotals: IMonthlyTransactionTotal[] = [];
+  public monthlyAverage = 0;
   public transactionsTotal = 0;
 
   constructor(
@@ -70,6 +71,7 @@ export class CategoriesComponent  {
         this.monthlyTransactionTotals = this._ynabDataService.processTransactionsByMonth(results);
         this.transactionsTotal = this.monthlyTransactionTotals
           .reduce((accumulator, monthlyTransactionTotal) => accumulator + monthlyTransactionTotal.expense, 0);
+        this.monthlyAverage = this.transactionsTotal / this.monthlyTransactionTotals.length;
       }, error: error => console.log(error)
     });
   }

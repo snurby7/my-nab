@@ -1,4 +1,4 @@
-<mat-vertical-stepper [linear]="isLinear" #stepper>
+<mat-vertical-stepper class="category-stepper" [linear]="isLinear" #stepper>
   <mat-step [stepControl]="firstFormGroup">
     <form [formGroup]="firstFormGroup">
       <ng-template matStepLabel>Select the category</ng-template>
@@ -39,7 +39,13 @@
     <ng-template matStepLabel>Done</ng-template>
     Here are all the transactions for {{selectedSubCategory?.name}} since {{startDate| date:'shortDate'}}
     <div>Total Spent {{ transactionsTotal | currency:'USD' }}</div>
-    <div *ngFor="let monthlyTransactionTotal of monthlyTransactionTotals">
+    <div>Monthly Average {{ monthlyAverage | currency:'USD' }}</div>
+    <div *ngFor="let monthlyTransactionTotal of monthlyTransactionTotals"
+      [ngClass]="{
+        'green': monthlyTransactionTotal.expense > monthlyAverage,
+        'red': monthlyTransactionTotal.expense < monthlyAverage
+      }">
+      <mat-icon>{{monthlyTransactionTotal.expense > monthlyAverage ? 'arrow_upward': 'arrow_downward'}}</mat-icon>
       Spent {{monthlyTransactionTotal.expense | currency:'USD'}} in the month of {{monthlyTransactionTotal.month | date:'shortDate'}}
     </div>
     <div>
