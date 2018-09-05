@@ -2,7 +2,7 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "ng serve and open",
+            "label": "ng serve",
             "type": "shell",
             "command": "ng serve -o",
             "problemMatcher": [],
