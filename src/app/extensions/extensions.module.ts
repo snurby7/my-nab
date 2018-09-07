@@ -33,6 +33,10 @@ import {
 import {
   ExtensionsAgent,
 } from './extensions.agent';
+import {
+  MonthlyBudgetComponent,
+} from './monthly-budget/monthly-budget.component';
+import { ExtensionHomeComponent } from './extension-home/extension-home.component';
 
 @NgModule({
   imports: [
@@ -50,6 +54,8 @@ import {
   ],
   declarations: [
     CategoriesComponent,
+    MonthlyBudgetComponent,
+    ExtensionHomeComponent,
   ],
   entryComponents: [
   ],

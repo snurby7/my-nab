@@ -4,7 +4,7 @@ import { from } from 'rxjs/internal/observable/from';
 import * as ynab from 'ynab';
 
 import { Config } from '../../data/config.enum';
-import { BudgetSummaryResponse, CategoriesResponse, CategoryResponse, HybridTransactionsResponse, TransactionsResponse } from 'ynab';
+import { BudgetSummaryResponse, CategoriesResponse, CategoryResponse, HybridTransactionsResponse, TransactionsResponse, MonthDetailResponse, MonthSummariesResponse } from 'ynab';
 
 @Injectable()
 export class YnabAgent {
@@ -35,5 +35,9 @@ export class YnabAgent {
 
     public getTransactionsByBudget(budgetId: string): Observable<TransactionsResponse> {
         return from(this.ynabAPI.transactions.getTransactions(budgetId));
+    }
+
+    public getBudgetMonths(budgetId: string): Observable<MonthSummariesResponse> {
+        return from(this.ynabAPI.months.getBudgetMonths(budgetId));
     }
 }

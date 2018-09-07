@@ -7,7 +7,7 @@ import {
 
 import {
     IMonthlyTransactionTotal,
-} from '../extensions/interface/monthly-transaction-total.interface';
+} from '../extensions';
 
 @Injectable()
 export class YnabDataService {

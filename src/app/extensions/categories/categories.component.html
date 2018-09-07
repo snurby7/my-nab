@@ -1,56 +1,77 @@
-<mat-vertical-stepper class="category-stepper" [linear]="isLinear" #stepper>
-  <mat-step [stepControl]="firstFormGroup">
-    <form [formGroup]="firstFormGroup">
-      <ng-template matStepLabel>Select the category</ng-template>
-      <mat-form-field>
-        <mat-select formControlName="categoryCtrl" required>
-          <mat-option *ngFor="let category of categories" [value]="category">
-            {{category.name}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <div>
-        <button mat-button [disabled]="!firstFormGroup.valid" (click)="prepareSubCategory()" matStepperNext>Next</button>
-      </div>
-    </form>
-  </mat-step>
-  <mat-step [stepControl]="secondFormGroup">
-    <form [formGroup]="secondFormGroup">
-      <ng-template matStepLabel>Select the sub-category</ng-template>
-      <mat-form-field>
-        <mat-select formControlName="categoryCtrl" required>
-          <mat-option *ngFor="let subCategory of subCategories" [value]="subCategory">
-            {{subCategory.name}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field>
-        <input matInput formControlName="dateCtrl" [matDatepicker]="picker" placeholder="Choose a start date">
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker startView="year" [startAt]="startDate"></mat-datepicker>
-      </mat-form-field>
-      <div>
-        <button mat-button matStepperPrevious>Back</button>
-        <button mat-button matStepperNext [disabled]="!secondFormGroup.valid" (click)="prepareTransactions()">Next</button>
-      </div>
-    </form>
-  </mat-step>
-  <mat-step>
-    <ng-template matStepLabel>Done</ng-template>
-    Here are all the transactions for {{selectedSubCategory?.name}} since {{startDate| date:'shortDate'}}
-    <div>Total Spent {{ transactionsTotal | currency:'USD' }}</div>
-    <div>Monthly Average {{ monthlyAverage | currency:'USD' }}</div>
-    <div *ngFor="let monthlyTransactionTotal of monthlyTransactionTotals"
-      [ngClass]="{
+<mat-vertical-stepper class="category-stepper"
+    [linear]="isLinear"
+    #stepper>
+    <mat-step [stepControl]="firstFormGroup">
+        <form [formGroup]="firstFormGroup">
+            <ng-template matStepLabel>Select the category</ng-template>
+            <mat-form-field>
+                <mat-select formControlName="categoryCtrl"
+                    required>
+                    <mat-option *ngFor="let category of categories"
+                        [value]="category">
+                        {{category.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <div>
+                <button mat-button
+                    [disabled]="!firstFormGroup.valid"
+                    (click)="prepareSubCategory()"
+                    matStepperNext>Next</button>
+            </div>
+        </form>
+    </mat-step>
+    <mat-step [stepControl]="secondFormGroup">
+        <form [formGroup]="secondFormGroup">
+            <ng-template matStepLabel>Select the sub-category</ng-template>
+            <mat-form-field>
+                <mat-select formControlName="categoryCtrl"
+                    required>
+                    <mat-option *ngFor="let subCategory of subCategories"
+                        [value]="subCategory">
+                        {{subCategory.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput
+                    formControlName="dateCtrl"
+                    [matDatepicker]="picker"
+                    placeholder="Choose a start date">
+                <mat-datepicker-toggle matSuffix
+                    [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker
+                    startView="year"
+                    [startAt]="startDate"></mat-datepicker>
+            </mat-form-field>
+            <div>
+                <button mat-button
+                    matStepperPrevious>Back</button>
+                <button mat-button
+                    matStepperNext
+                    [disabled]="!secondFormGroup.valid"
+                    (click)="prepareTransactions()">Next</button>
+            </div>
+        </form>
+    </mat-step>
+    <mat-step>
+        <ng-template matStepLabel>Done</ng-template>
+        Here are all the transactions for {{selectedSubCategory?.name}} since {{startDate| date:'shortDate'}}
+        <div>Total Spent {{ transactionsTotal | currency:'USD' }}</div>
+        <div>Monthly Average {{ monthlyAverage | currency:'USD' }}</div>
+        <div *ngFor="let monthlyTransactionTotal of monthlyTransactionTotals"
+            [ngClass]="{
         'green': monthlyTransactionTotal.expense > monthlyAverage,
         'red': monthlyTransactionTotal.expense < monthlyAverage
       }">
-      <mat-icon>{{monthlyTransactionTotal.expense > monthlyAverage ? 'arrow_upward': 'arrow_downward'}}</mat-icon>
-      Spent {{monthlyTransactionTotal.expense | currency:'USD'}} in the month of {{monthlyTransactionTotal.month | date:'shortDate'}}
-    </div>
-    <div>
-      <button mat-button matStepperPrevious>Back</button>
-      <button mat-button (click)="stepper.reset()">Reset</button>
-    </div>
-  </mat-step>
+            <mat-icon>{{monthlyTransactionTotal.expense > monthlyAverage ? 'arrow_upward': 'arrow_downward'}}</mat-icon>
+            Spent {{monthlyTransactionTotal.expense | currency:'USD'}} in the month of {{monthlyTransactionTotal.month | date:'shortDate'}}
+        </div>
+        <div>
+            <button mat-button
+                matStepperPrevious>Back</button>
+            <button mat-button
+                (click)="stepper.reset()">Reset</button>
+        </div>
+    </mat-step>
 </mat-vertical-stepper>

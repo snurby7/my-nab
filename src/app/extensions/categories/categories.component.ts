@@ -19,7 +19,7 @@ import {
 } from '../../services/ynab-data.service';
 import {
   IMonthlyTransactionTotal,
-} from '../interface/monthly-transaction-total.interface';
+} from '../contracts/monthly-transaction-total.interface';
 
 @Component({
   selector: 'app-categories',
