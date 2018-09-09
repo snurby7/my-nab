@@ -12,6 +12,7 @@ import {
     BudgetSummary,
     CategoryGroupWithCategories,
     HybridTransaction,
+    MonthSummary,
     TransactionDetail,
 } from 'ynab';
 
@@ -23,15 +24,18 @@ interface IBase {
 export class FirebaseService {
     public budgets: Observable<BudgetSummary[]>;
     public categories: Observable<CategoryGroupWithCategories[]>;
+    public monthSummaries: Observable<MonthSummary[]>;
     public transactions: Observable<TransactionDetail[]>;
 
     private readonly _budgetCollectionKey = 'budgets';
     private readonly _categoryCollectionKey = 'categories';
+    private readonly _monthSummariesCollectionKey =  'monthSummaries';
     private readonly _transactionCollectionKey = 'transactions';
     private readonly _transactionDetailCollectionKey = 'transactionDetails';
 
     private budgetCollection: AngularFirestoreCollection<BudgetSummary>;
     private categoryCollection: AngularFirestoreCollection<CategoryGroupWithCategories>;
+    private monthBudgetCollection: AngularFirestoreCollection<MonthSummary>;
     private transactionCollection: AngularFirestoreCollection<TransactionDetail>;
 
     constructor(
@@ -40,13 +44,19 @@ export class FirebaseService {
         this.budgetCollection = this._angularFireStore.collection<BudgetSummary>(this._budgetCollectionKey);
         this.categoryCollection = this._angularFireStore.collection<CategoryGroupWithCategories>(this._categoryCollectionKey);
         this.transactionCollection = this._angularFireStore.collection<TransactionDetail>(this._transactionDetailCollectionKey);
+        this.monthBudgetCollection = this._angularFireStore.collection<MonthSummary>(this._monthSummariesCollectionKey);
         this.budgets = this.budgetCollection.valueChanges();
         this.categories = this.categoryCollection.valueChanges();
+        this.monthSummaries = this.monthBudgetCollection.valueChanges();
         this.transactions = this.transactionCollection.valueChanges();
     }
 
     public updateBudgets(budgets: BudgetSummary[]): void {
         this.updateRefs<BudgetSummary>(budgets, this._budgetCollectionKey);
+    }
+
+    public updatemonthSummaries(monthSummaries: MonthSummary[]): void {
+        this.updateRefs<MonthSummary>(monthSummaries, this._monthSummariesCollectionKey, 'month');
     }
 
     public updateTransactions(transactions: HybridTransaction[]): void {
@@ -79,9 +89,9 @@ export class FirebaseService {
         ).valueChanges()  as Observable<TransactionDetail[]>;
     }
 
-    private updateRefs<T>(data: T[], collectionKey: string): void {
+    private updateRefs<T>(data: T[], collectionKey: string, index: string = null): void {
         data.forEach((x: any) => {
-            const budgetRef = this._angularFireStore.collection(collectionKey).doc(`${x.id}`);
+            const budgetRef = this._angularFireStore.collection(collectionKey).doc(`${index ? x[index] : x.id}`);
             budgetRef.set(x, { merge: true});
         });
     }

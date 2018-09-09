@@ -3,6 +3,10 @@ import {
   OnInit,
 } from '@angular/core';
 
+import {
+  FirebaseService,
+} from '../../services/firebase.service';
+
 @Component({
   selector: 'app-monthly-budget',
   templateUrl: './monthly-budget.component.html',
@@ -10,9 +14,13 @@ import {
 })
 export class MonthlyBudgetComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private _fireBaseService: FirebaseService,
+  ) { }
 
-  ngOnInit() {
+  public ngOnInit() {
+    this._fireBaseService.monthSummaries.subscribe(result => {
+      // do some processing on this data soon.
+    });
   }
-
 }
