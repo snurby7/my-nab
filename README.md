@@ -1,5 +1,6 @@
 # MyNab
 
+On the back burner for a while to focus on insights and coffee-rates<br>
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 6.1.2.
 
 ## Development server
